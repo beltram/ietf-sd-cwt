@@ -448,10 +448,10 @@ impl cbor_event::se::Serialize for SdPayload {
             } + match &self.sub {
                 Some(_) => 1,
                 None => 0,
-            } + match &self.key_4 {
+            } + match &self.exp {
                 Some(_) => 1,
                 None => 0,
-            } + match &self.key_5 {
+            } + match &self.nbf {
                 Some(_) => 1,
                 None => 0,
             } + match &self.cnonce {
@@ -481,16 +481,16 @@ impl cbor_event::se::Serialize for SdPayload {
         }
         serializer.write_unsigned_integer(3u64)?;
         serializer.write_text(&self.aud)?;
-        if let Some(field) = &self.key_4 {
+        if let Some(field) = &self.exp {
             serializer.write_unsigned_integer(4u64)?;
             field.serialize(serializer)?;
         }
-        if let Some(field) = &self.key_5 {
+        if let Some(field) = &self.nbf {
             serializer.write_unsigned_integer(5u64)?;
             field.serialize(serializer)?;
         }
         serializer.write_unsigned_integer(6u64)?;
-        self.key_6.serialize(serializer)?;
+        self.iat.serialize(serializer)?;
         if let Some(field) = &self.cnf {
             serializer.write_unsigned_integer(8u64)?;
             serializer.write_map(cbor_event::Len::Len(field.len() as u64))?;
@@ -536,9 +536,9 @@ impl Deserialize for SdPayload {
         let mut iss = None;
         let mut sub = None;
         let mut aud = None;
-        let mut key_4 = None;
-        let mut key_5 = None;
-        let mut key_6 = None;
+        let mut exp = None;
+        let mut nbf = None;
+        let mut iat = None;
         let mut cnf = None;
         let mut cnonce = None;
         let mut sd_hash = None;
@@ -573,24 +573,24 @@ impl Deserialize for SdPayload {
                         aud = Some(raw.text()? as String);
                     }
                     4 => {
-                        if key_4.is_some() {
+                        if exp.is_some() {
                             return Err(DeserializeFailure::DuplicateKey(Key::Uint(4)).into());
                         }
                         read_len.read_elems(1)?;
-                        key_4 = Some(Int::deserialize(raw)?);
+                        exp = Some(Int::deserialize(raw)?);
                     }
                     5 => {
-                        if key_5.is_some() {
+                        if nbf.is_some() {
                             return Err(DeserializeFailure::DuplicateKey(Key::Uint(5)).into());
                         }
                         read_len.read_elems(1)?;
-                        key_5 = Some(Int::deserialize(raw)?);
+                        nbf = Some(Int::deserialize(raw)?);
                     }
                     6 => {
-                        if key_6.is_some() {
+                        if iat.is_some() {
                             return Err(DeserializeFailure::DuplicateKey(Key::Uint(6)).into());
                         }
-                        key_6 = Some(Int::deserialize(raw)?);
+                        iat = Some(Int::deserialize(raw)?);
                     }
                     8 => {
                         if cnf.is_some() {
@@ -718,7 +718,7 @@ impl Deserialize for SdPayload {
             Some(x) => x,
             None => return Err(DeserializeFailure::MandatoryFieldMissing(Key::Uint(3)).into()),
         };
-        let key_6 = match key_6 {
+        let iat = match iat {
             Some(x) => x,
             None => return Err(DeserializeFailure::MandatoryFieldMissing(Key::Uint(6)).into()),
         };
@@ -736,9 +736,9 @@ impl Deserialize for SdPayload {
             iss,
             sub,
             aud,
-            key_4,
-            key_5,
-            key_6,
+            exp,
+            nbf,
+            iat,
             cnonce,
             cnf,
             sd_hash,

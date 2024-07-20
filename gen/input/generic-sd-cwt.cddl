@@ -24,9 +24,9 @@ sd-payload = {
     ? 1: tstr, ; @name iss "https://issuer.example"
     ? 2: tstr, ; @name sub "https://device.example"
       3: tstr, ; @name aud "https://verifier.example"
-    ? 4: int, ; @exp exp 1883000000
-    ? 5: int, ; @exp nbf 1883000000
-      6: int, ; @exp iat 1883000000
+    ? 4: int, ; @name exp 1883000000
+    ? 5: int, ; @name nbf 1883000000
+      6: int, ; @name iat 1883000000
     ? 39: bstr, ; @name cnonce
     ? 8: { * key => anyy }, ; @name cnf key confirmation
     ; sd-cwt new claims

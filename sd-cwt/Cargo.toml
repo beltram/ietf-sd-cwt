@@ -4,9 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [build-dependencies]
-#cddl-codegen = { git = "https://github.com/dcSpark/cddl-codegen.git" }
-cddl-codegen = { path = "../../cddl-codegen" }
-
+cddl-codegen = { git = "https://github.com/dcSpark/cddl-codegen.git" }
 reqwest = { version = "0.12", features = ["blocking"] }
 cbor_event = "2.4.0"
 # we don't update due to https://github.com/anweiss/cddl/issues/222
@@ -19,12 +17,3 @@ pathdiff = "0.2.1"
 jwt-simple = { version = "0.12", features = ["cwt", "ciborium"] }
 #cddl = "0.9"
 #cddl-cat = "0.6"
-
-#cddl-codegen = { git = "https://github.com/dcSpark/cddl-codegen.git" }
-cddl-codegen = { path = "../../cddl-codegen" }
-reqwest = { version = "0.12", features = ["blocking"] }
-cbor_event = "2.4.0"
-# we don't update due to https://github.com/anweiss/cddl/issues/222
-cddl = "=0.9.1"
-codegen = { git = "https://github.com/dcSpark/codegen", branch = "master" }
-pathdiff = "0.2.1"

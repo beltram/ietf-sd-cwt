@@ -1,41 +1,22 @@
-fn main() {}
-
-/*use std::error::Error;
+use std::error::Error;
 use std::path::PathBuf;
+
 use cddl_codegen::{
-    generation::GenerationScope,
-    dep_graph,
-    parsing,
-    intermediate::{CDDLIdent, IntermediateTypes, PlainGroupInfo, ROOT_SCOPE, RustIdent},
-    comment_ast::RuleMetadata,
     cli::Cli,
-    parsing::{parse_rule, rule_ident, rule_is_scope_marker}
+    comment_ast::RuleMetadata,
+    dep_graph,
+    generation::GenerationScope,
+    intermediate::{CDDLIdent, IntermediateTypes, PlainGroupInfo, ROOT_SCOPE, RustIdent},
+    parsing,
+    parsing::{parse_rule, rule_ident, rule_is_scope_marker},
 };
 
-const BASE: &str = "https://raw.githubusercontent.com/mesur-io/ietf-misc/main/editor_drafts";
-// const FILES: [&str; 2] = ["generic-sd-cwt.cddl", "sd-cwts.cddl"];
-const FILES: [&str; 1] = ["generic-sd-cwt.cddl"];
-// const FILES: [&str; 1] = ["test.cddl"];
-
 fn main() -> Result<(), Box<dyn Error>> {
-    // cleanup
-    /*std::fs::remove_dir_all("../gen/input")?;
-    std::fs::create_dir_all("../gen/input")?;
-    std::fs::remove_dir_all("../gen/output")?;
-    std::fs::create_dir_all("../gen/output")?;
-
-    for f in FILES {
-        let file = format!("{BASE}/{f}");
-        let cddl = reqwest::blocking::get(file)?.text()?;
-        std::fs::write(&format!("../gen/input/{f}"), cddl).unwrap();
-    }*/
-
     let args = Cli {
         input: PathBuf::from("../gen/input"),
-        output: PathBuf::from("../gen/output"),
-        // static_dir: PathBuf::from("../static"),
-        /*
-        lib_name: "".to_string(),
+        output: PathBuf::from("../sd-cwt-types"),
+        static_dir: PathBuf::from("../gen/static"),
+        lib_name: "sd-cwt-types".to_string(),
         annotate_fields: false,
         to_from_bytes_methods: false,
         binary_wrappers: false,
@@ -48,8 +29,6 @@ fn main() -> Result<(), Box<dyn Error>> {
         common_import_override: None,
         wasm_cbor_json_api_macro: None,
         wasm_conversions_macro: None,
-        */
-        ..Default::default()
     };
 
     gen(args).unwrap();
@@ -202,4 +181,3 @@ fn cddl_paths(
     }
     Ok(())
 }
-*/

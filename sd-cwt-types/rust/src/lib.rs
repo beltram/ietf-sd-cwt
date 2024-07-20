@@ -204,9 +204,9 @@ pub struct SdPayload {
     pub iss: Option<String>,
     pub sub: Option<String>,
     pub aud: String,
-    pub key_4: Option<Int>,
-    pub key_5: Option<Int>,
-    pub key_6: Int,
+    pub exp: Option<Int>,
+    pub nbf: Option<Int>,
+    pub iat: Int,
     pub cnonce: Option<Vec<u8>>,
     pub cnf: Option<BTreeMap<Key, Anyy>>,
     pub sd_hash: Option<Vec<u8>>,
@@ -216,14 +216,14 @@ pub struct SdPayload {
 }
 
 impl SdPayload {
-    pub fn new(aud: String, key_6: Int, custom: BTreeMap<Key, Anyy>) -> Self {
+    pub fn new(aud: String, iat: Int, custom: BTreeMap<Key, Anyy>) -> Self {
         Self {
             iss: None,
             sub: None,
             aud,
-            key_4: None,
-            key_5: None,
-            key_6,
+            exp: None,
+            nbf: None,
+            iat,
             cnonce: None,
             cnf: None,
             sd_hash: None,
