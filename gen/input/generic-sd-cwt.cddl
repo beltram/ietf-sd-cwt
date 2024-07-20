@@ -1,0 +1,57 @@
+sd-cwt = #6.18([
+   protected: bstr .cbor sd-protected,
+   unprotected,
+   payload: bstr .cbor sd-payload,
+   signature: bstr
+])
+
+sd-protected = {
+   1: int, ; @name alg
+   16: text, ; @name typ
+   ; todo: try to inline custom
+   custom: { * key => anyy }
+}
+
+unprotected = {
+   ? 1111: [ +salted ], ; @name sd_claims
+   ? 1112: bstr,    ; @name sd_kbt .cbor sd-cwt-kbt,
+   ; todo: try to inline custom
+   custom: { * key => anyy }
+}
+
+sd-payload = {
+    ; standard claims
+    ? 1: tstr, ; @name iss "https://issuer.example"
+    ? 2: tstr, ; @name sub "https://device.example"
+      3: tstr, ; @name aud "https://verifier.example"
+    ? 4: int, ; @exp exp 1883000000
+    ? 5: int, ; @exp nbf 1883000000
+      6: int, ; @exp iat 1883000000
+    ? 39: bstr, ; @name cnonce
+    ? 8: { * key => anyy }, ; @name cnf key confirmation
+    ; sd-cwt new claims
+    ? 1113: bstr, ; @name sd_hash
+    ? 1114: int, ; @name sd_alg -16 for sha-256
+    ? 1115: [ * bstr ], ; @name redacted_keys
+    ; todo: try to inline custom
+    custom: { * key => anyy }
+}
+
+;redacted_element = { "...": bstr }
+salted = salted-claim / salted-element
+
+salted-claim = bstr .cbor salted-claim-item
+salted-claim-item = [
+    salt: bstr .size 16, ; 128-bit salt
+    (int / text), ; claim name
+    value: anyy ; claim value
+]
+
+salted-element = bstr .cbor salted-element-item
+salted-element-item = [
+    salt: bstr .size 16, ; 128-bit salt
+    value: anyy ; claim value
+]
+
+anyy = [0]
+key = int / text

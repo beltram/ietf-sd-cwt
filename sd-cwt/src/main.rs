@@ -1,6 +1,5 @@
-fn main() {}
-
-/*use std::error::Error;
+use std::error::Error;
+use std::fs::File;
 use std::path::PathBuf;
 use cddl_codegen::{
     generation::GenerationScope,
@@ -19,21 +18,21 @@ const FILES: [&str; 1] = ["generic-sd-cwt.cddl"];
 
 fn main() -> Result<(), Box<dyn Error>> {
     // cleanup
-    /*std::fs::remove_dir_all("../gen/input")?;
-    std::fs::create_dir_all("../gen/input")?;
-    std::fs::remove_dir_all("../gen/output")?;
-    std::fs::create_dir_all("../gen/output")?;
+    /*std::fs::remove_dir_all("gen/input")?;
+    std::fs::create_dir_all("gen/input")?;
+    std::fs::remove_dir_all("gen/output")?;
+    std::fs::create_dir_all("gen/output")?;
 
     for f in FILES {
         let file = format!("{BASE}/{f}");
         let cddl = reqwest::blocking::get(file)?.text()?;
-        std::fs::write(&format!("../gen/input/{f}"), cddl).unwrap();
+        std::fs::write(&format!("gen/input/{f}"), cddl).unwrap();
     }*/
 
     let args = Cli {
-        input: PathBuf::from("../gen/input"),
-        output: PathBuf::from("../gen/output"),
-        // static_dir: PathBuf::from("../static"),
+        input: PathBuf::from("gen/input"),
+        output: PathBuf::from("gen/output"),
+        static_dir: PathBuf::from("gen/static"),
         /*
         lib_name: "".to_string(),
         annotate_fields: false,
@@ -52,7 +51,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         ..Default::default()
     };
 
-    gen(args).unwrap();
+    gen(args)?;
 
     Ok(())
 }
@@ -202,4 +201,3 @@ fn cddl_paths(
     }
     Ok(())
 }
-*/
