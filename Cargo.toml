@@ -1,0 +1,3 @@
+[workspace]
+members = ["sd-cwt", "sd-cwt-types"]
+resolver = "2"
