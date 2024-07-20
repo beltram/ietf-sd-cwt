@@ -12,3 +12,11 @@ Cargo.lock
 
 # MSVC Windows builds of rustc generate these, which store debugging information
 *.pdb
+
+### IntelliJ IDEA & Gradle ###
+.idea
+.gradle
+*.iws
+*.iml
+*.ipr
+out/
