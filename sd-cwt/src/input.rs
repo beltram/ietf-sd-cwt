@@ -27,7 +27,7 @@ impl<'de> Deserialize<'de> for InputClaims {
         D: Deserializer<'de>,
     {
         let mut value = YamlValue::deserialize(deserializer)?;
-        let mut path = VecDeque::new();
+        let mut path = Vec::new();
         let mut tagged_paths = Vec::new();
         collect_tagged_keys(&mut value, &mut path, &mut tagged_paths).map_err(|e| {
             serde::de::Error::custom(format!("Error parsing YAML at path {:?}: {:?}", path, e))
@@ -42,7 +42,7 @@ impl<'de> Deserialize<'de> for InputClaims {
 
 fn collect_tagged_keys(
     node: &mut YamlValue,
-    path: &mut VecDeque<String>,
+    path: &mut Vec<String>,
     paths: &mut Vec<String>,
 ) -> Result<(), SdCwtError> {
     let sd_tag = serde_yaml::value::Tag::new("!sd");
@@ -62,9 +62,9 @@ fn collect_tagged_keys(
                         }
                     }
                     YamlValue::String(key) => {
-                        path.push_back(key.to_string());
+                        path.push(key.to_string());
                         collect_tagged_keys(value, path, paths)?;
-                        path.pop_back();
+                        path.pop();
                     }
                     _ => {}
                 }
@@ -72,7 +72,7 @@ fn collect_tagged_keys(
         }
         YamlValue::Sequence(seq) => {
             for (index, value) in seq.iter_mut().enumerate() {
-                path.push_back(index.to_string());
+                path.push(index.to_string());
                 collect_tagged_keys(value, path, paths)?;
                 // Ugly hack to remove tag from sequence
                 if let YamlValue::Tagged(tag) = &value {
@@ -85,7 +85,7 @@ fn collect_tagged_keys(
                         *value = YamlValue::String(new_val.to_string());
                     }
                 }
-                path.pop_back();
+                path.pop();
             }
         }
         YamlValue::Tagged(tag) => {
@@ -108,7 +108,7 @@ fn collect_tagged_keys(
     Ok(())
 }
 
-fn build_full_path(path: &VecDeque<String>, additional_segment: &str) -> String {
+fn build_full_path(path: &Vec<String>, additional_segment: &str) -> String {
     let full_path = path.iter().join("/");
     format!("{}/{}", full_path, additional_segment)
 }
@@ -128,7 +128,7 @@ mod tests {
 
         println!("{:?}", input.raw);
         println!("{:?}", input.disclosable_paths);
-
+        
         /*assert_eq!(
             json,
             serde_json::json!({
