@@ -8,3 +8,5 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 cbor_event = "2.4.0"
+linked-hash-map = "0.5.3"
+derivative = "2.2.0"

@@ -17,10 +17,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         output: PathBuf::from("../sd-cwt-types"),
         static_dir: PathBuf::from("../gen/static"),
         lib_name: "sd-cwt-types".to_string(),
-        annotate_fields: false,
-        to_from_bytes_methods: false,
+        annotate_fields: true,
+        to_from_bytes_methods: true,
         binary_wrappers: false,
-        preserve_encodings: false,
+        preserve_encodings: true,
         canonical_form: false,
         wasm: false,
         json_serde_derives: false,
@@ -31,7 +31,10 @@ fn main() -> Result<(), Box<dyn Error>> {
         wasm_conversions_macro: None,
     };
 
-    gen(args).unwrap();
+    std::fs::remove_dir_all("../sd-cwt-types")?;
+    std::fs::create_dir_all("../sd-cwt-types")?;
+
+    gen(args)?;
 
     Ok(())
 }

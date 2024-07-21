@@ -1,3 +1,4 @@
 [workspace]
-members = ["sd-cwt", "sd-cwt-types/rust"]
+members = ["sd-cwt"]
 resolver = "2"
+exclude = ["sd-cwt-types/rust"]
