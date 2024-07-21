@@ -1,11 +1,10 @@
+use std::str::FromStr;
+
 use jwt_simple::prelude::*;
 
 use crate::error::SdCwtResult;
-use crate::types::SdCwtPayload;
 
 pub mod error;
-pub mod types;
-pub mod input;
 
 pub struct IssuerPrivateKey(Ed25519KeyPair);
 
@@ -22,19 +21,7 @@ impl IssuerPrivateKey {
         Self(Ed25519KeyPair::generate())
     }
 
-    pub fn sign(&self, claims: SdCwtPayload) -> SdCwtResult<SdCwt> {
+    pub fn sign(&self) -> SdCwtResult<SdCwt> {
         todo!()
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn should_succeed() {
-        let issuer = IssuerPrivateKey::generate();
-        // let sd_cwt = issuer.sign().unwrap();
-        // println!("{sd_cwt}");
     }
 }
