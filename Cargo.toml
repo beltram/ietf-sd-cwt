@@ -1,4 +1,31 @@
-[workspace]
-members = ["sd-cwt"]
-resolver = "2"
-exclude = ["sd-cwt-types/rust"]
+[package]
+name = "sd-cwt"
+version = "0.1.0"
+edition = "2021"
+
+[build-dependencies]
+cddl-codegen = { git = "https://github.com/dcSpark/cddl-codegen.git" }
+reqwest = { version = "0.12", features = ["blocking"] }
+cbor_event = "2.4.0"
+# we don't update due to https://github.com/anweiss/cddl/issues/222
+cddl = "=0.9.1"
+codegen = { git = "https://github.com/dcSpark/codegen", branch = "master" }
+pathdiff = "0.2.1"
+
+[dependencies]
+jwt-simple = { version = "0.12", features = ["cwt", "ciborium"] }
+thiserror = "1.0"
+serde_yaml = "0.9"
+serde = "1.0"
+serde_json = "1.0"
+ciborium = "0.2"
+itertools = "0.13"
+
+# COSE
+#aws-nitro-enclaves-cose = "0.5.2"
+coset = "0.3.7"
+#cose-rust = "0.1.7"
+
+# EDN
+cbor-edn = "0.0.4"
+cbor-diag = "0.1"
